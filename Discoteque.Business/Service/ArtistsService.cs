@@ -1,27 +1,39 @@
 using Discoteque.Business.IServices;
 using Discoteque.Data.Models;
+using Discoteque.Data;
 
 namespace Discoteque.Business.Services;
 
 public class ArtistsService : IArtistsService
 {
-    public Task<IEnumerable<Artist>> GetArtistsAsync()
+    private IUnitOfWork _unitOfWork;
+
+    public ArtistsService(IUnitOfWork unitofWork)
     {
-        throw new NotImplementedException();
+        _unitOfWork = unitofWork;
+    }
+    
+    public async Task<Artist> CreateArtist(Artist artist)
+    {
+        await _unitOfWork.ArtistRepository.AddAsync(artist);
+        await _unitOfWork.SaveAsync();
+        return artist;
     }
 
-    Task IArtistsService.AddAsync(Artist artist)
+    public async Task<IEnumerable<Artist>> GetArtistsAsync()
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.ArtistRepository.GetAllAsync();
     }
 
-    Task<IEnumerable<Artist>> IArtistsService.GetById(long id)
+    public async Task<Artist> GetById(int id)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.ArtistRepository.FindAsync(id);
     }
 
-    Task IArtistsService.UpdateAsync(Artist artist)
+    public async Task<Artist> UpdateArtist(Artist artist)
     {
-        throw new NotImplementedException();
+        await _unitOfWork.ArtistRepository.Update(artist);
+        await _unitOfWork.SaveAsync();
+        return artist;
     }
 }

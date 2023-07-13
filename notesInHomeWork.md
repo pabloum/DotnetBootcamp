@@ -12,4 +12,6 @@ dotnet sln add Discoteque.Data/
 dotnet build
 
 dotnet add package Microsoft.EntityFrameworkCore.InMemory
+
+dotnet add Discoteque.API reference Discoteque.Data/Discoteque.Data.csproj
 ```
